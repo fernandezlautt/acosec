@@ -1,10 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 #include "aco.h"
 #include "graph.h"
 #include "system.h"
 #include "util.h"
-#include <math.h>
 
 /*
 Update pheromone matrix
@@ -22,7 +22,7 @@ void pheromone_update(SYSTEM *system)
 
     for (i = 0; i < system->distance_matrix->n - 1; i++)
     {
-        system->pheromone_matrix->adj[system->best_path[i]][system->best_path[i + 1]] += 1.0;
+        system->pheromone_matrix->adj[system->best_path[i]][system->best_path[i + 1]] += system->reinforcement_rate;
     }
     // Last city to first city
     system->pheromone_matrix->adj[system->best_path[system->distance_matrix->n - 1]][system->best_path[0]] += 1.0;
@@ -72,12 +72,15 @@ double *calculate_probabilities(SYSTEM *system, ANT *ant)
                 break;
             }
         }
-        sum += pow(pheromones[i], system->alpha) * pow(1.0 / system->distance_matrix->adj[ant->current_city][i], system->beta);
+
+        // sum += pow(pheromones[i], system->alpha) * pow(1.0 / system->distance_matrix->adj[ant->current_city][i], system->beta);
+        sum += pheromones[i];
     }
 
     for (i = 0; i < system->distance_matrix->n; i++)
     {
-        probabilities[i] = pow(pheromones[i], system->alpha) * pow(1.0 / system->distance_matrix->adj[ant->current_city][i], system->beta) / sum;
+        probabilities[i] = pheromones[i] / sum;
+        // probabilities[i] = pow(pheromones[i], system->alpha) * pow(1.0 / system->distance_matrix->adj[ant->current_city][i], system->beta) / sum;
     }
     return probabilities;
 }

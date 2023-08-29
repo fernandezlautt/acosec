@@ -17,14 +17,15 @@ typedef struct SYSTEM
     int *best_path;
     MATRIX *distance_matrix;
     MATRIX *pheromone_matrix;
-    int best_cost;
+    double best_cost;
     int n_ants;
     double evaporation_rate;
+    double reinforcement_rate;
     double alpha;
     double beta;
 } SYSTEM;
 
-SYSTEM *initialize_system(int n_cities, int n_ants, double alpha, double beta, double evaporation_rate);
+SYSTEM *initialize_system(int n_cities, int n_ants, double alpha, double beta, double evaporation_rate, double reinforcement_rate);
 ANT *initialize_ants(int n_ants, int n_cities);
 void free_system(SYSTEM *system);
 

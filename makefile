@@ -1,6 +1,6 @@
 CC = gcc
 
-CCFLAGS = -Wall -g 
+CCFLAGS = -Wall -g -lm
 
 aco : bin/aco.o bin/main.o bin/graph.o bin/system.o bin/util.o
 	$(CC) $(CCFLAGS) -o bin/aco bin/aco.o bin/main.o bin/graph.o bin/system.o bin/util.o 
